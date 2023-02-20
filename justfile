@@ -5,8 +5,8 @@ set shell := ["powershell", "-nop", "-c"]
 # Set up Python environment with specified Python version
 bootstrap:
     If (-not (Test-Path .venv)) { py -{{ PYTHON_VERSION }} -m venv .venv }
-    & ".venv\Scripts\python.exe" -m pip install pip mypy setuptools wheel twine black pylint types-requests --quiet --upgrade
-    & ".venv\Scripts\python.exe" -m pip install . --upgrade --upgrade-strategy eager
+    & ".venv\Scripts\python.exe" -m pip install pip --quiet --upgrade
+    & ".venv\Scripts\python.exe" -m pip install ".[dev]" --upgrade --upgrade-strategy eager
 
 # Check static typing
 mypy:
@@ -20,7 +20,7 @@ clean:
 
 # Build the whole project, create a release
 build: clean bootstrap
-    & ".venv\Scripts\python.exe" setup.py sdist bdist_wheel
+    & ".venv\Scripts\python.exe" -m build
 
 # Upload the release to PyPi
 upload:

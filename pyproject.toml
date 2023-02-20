@@ -12,7 +12,18 @@ name = "Máté Farkas"
 email = "fm@farkas-mate.hu"
 
 [project.urls]
-homepage = "https://github.com/presidento/azure-requests"
+Homepage = "https://github.com/presidento/azure-requests"
+Changelog = "https://github.com/presidento/azure-requests/blob/main/CHANGELOG.md"
 
 [tool.setuptools.package-data]
 azure_requests = ["py.typed"]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "build",
+    "mypy",
+    "pylint",
+    "twine",
+    "types-requests",
+]

@@ -9,6 +9,16 @@ import requests
 logger = logging.getLogger(__name__)
 
 
+class AzureApiCall:
+    def __init__(self, azure_requests, method, url):
+        self.azure_requests = azure_requests
+        self.method = method
+        self.url = url
+
+    def request(self, *args, **kwargs):
+        return self.azure_requests.request(self.method, self.url, *args, **kwargs)
+
+
 class AzureRequests:
     def __init__(
         self,
@@ -23,28 +33,40 @@ class AzureRequests:
         self.team = team
         self.rate_info: Optional[RateLimit] = None
 
+    def api(self, azure_url, **url_params):
+        params = dict(
+            organization=self.organization,
+            project=self.project or "",
+            team=self.team or "",
+        )
+        params.update(url_params)
+        print(params)
+        method, _, raw_url = azure_url.partition(" ")
+        url = raw_url.format(**params)
+        return AzureApiCall(self, method, url)
+
     def get(self, url: str, *args, **kwargs) -> Any:
         return self.request("get", url, *args, **kwargs)
 
     def post(self, url: str, *args, **kwargs) -> Any:
-        kwargs.setdefault("headers", {})
-        kwargs["headers"]["Content-type"] = "application/json"
         return self.request("post", url, *args, **kwargs)
 
     def put(self, url: str, *args, **kwargs) -> Any:
-        kwargs.setdefault("headers", {})
-        kwargs["headers"]["Content-type"] = "application/json"
         return self.request("put", url, *args, **kwargs)
 
     def patch(self, url: str, *args, **kwargs) -> Any:
-        kwargs.setdefault("headers", {})
-        kwargs["headers"]["Content-type"] = "application/json-patch+json"
         return self.request("patch", url, *args, **kwargs)
 
     def delete(self, url: str, *args, **kwargs) -> Any:
         return self.request("delete", url, *args, **kwargs)
 
     def request(self, method: str, url: str, *args, **kwargs) -> Any:
+        kwargs.setdefault("headers", {})
+        if method.lower() in ("post", "put"):
+            kwargs["headers"]["Content-type"] = "application/json"
+        if method.lower() == "patch":
+            kwargs["headers"]["Content-type"] = "application/json-patch+json"
+
         url_params = {
             "organization": self.organization,
             "project": self.project,

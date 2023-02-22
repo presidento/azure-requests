@@ -61,9 +61,7 @@ class AzureRequests:
 
     def request(self, method: str, url: str, *args, **kwargs) -> Any:
         kwargs.setdefault("headers", {})
-        if method.lower() in ("post", "put"):
-            kwargs["headers"]["Content-type"] = "application/json"
-        if method.lower() == "patch":
+        if method.lower() in ("post", "put", "patch"):
             kwargs["headers"]["Content-type"] = "application/json-patch+json"
 
         url_params = {

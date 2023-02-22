@@ -35,3 +35,5 @@ work_item = azure_requests.api(
 
 print(work_item)
 ```
+
+For a more detailed example see `example.py`.

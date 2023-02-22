@@ -40,7 +40,6 @@ class AzureRequests:
             team=self.team or "",
         )
         params.update(url_params)
-        print(params)
         method, _, raw_url = azure_url.partition(" ")
         url = raw_url.format(**params)
         return AzureApiCall(self, method, url)

@@ -1,3 +1,8 @@
+# 23.4
+
+- Fix: remove forgotten print function
+- Add detailed example
+
 # 23.3
 
 - Add `api` method, so API endpoints can be copy-pasted from Azure DevOps documentation.

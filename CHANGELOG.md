@@ -1,3 +1,7 @@
+# 23.5
+
+- Fix Content-Type header
+
 # 23.4
 
 - Fix: remove forgotten print function

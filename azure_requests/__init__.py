@@ -100,7 +100,12 @@ class AzureRequests:
             )
             if waiting:
                 time.sleep(waiting)
-        response = requests.request(method, url, *args, **kwargs)
+        try:
+            response = requests.request(method, url, *args, **kwargs)
+        except requests.exceptions.ProxyError as ex:
+            logger.warning(f"Proxy error ({ex}). Retrying later...")
+            time.sleep(15)
+            return self.request(method, url, *args, **kwargs)
         if not response.ok:
             if response.status_code // 100 == 5:
                 logger.warning(

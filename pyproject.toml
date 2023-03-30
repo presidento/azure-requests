@@ -1,6 +1,6 @@
 [project]
 name = "azure_requests"
-version = "23.5"  # YY.<counter>
+version = "23.6"  # YY.<counter>
 description = "Requests wrapper for Azure DevOps"
 readme = "README.md"
 license = {text = "MIT License"}

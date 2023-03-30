@@ -1,3 +1,7 @@
+# 23.6
+
+- Retry on proxy error
+
 # 23.5
 
 - Fix Content-Type header

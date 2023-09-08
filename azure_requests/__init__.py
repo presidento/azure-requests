@@ -4,7 +4,7 @@ import logging
 import time
 from typing import Any, Optional, cast
 
-import requests
+import httpx
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +32,7 @@ class AzureRequests:
         self.project = project
         self.team = team
         self.rate_info: Optional[RateLimit] = None
+        self.http_client = httpx.Client(follow_redirects=True, http2=True)
 
     def call(self, azure_url, params=None, data=None, result_key=None):
         api_call = self.api(azure_url, **(params or {}))
@@ -72,9 +73,9 @@ class AzureRequests:
 
     def request(self, method: str, url: str, *args, **kwargs) -> Any:
         kwargs.setdefault("headers", {})
-        if method.lower() == "patch":
+        if method.lower() in ("patch", "post"):
             kwargs["headers"]["Content-type"] = "application/json-patch+json"
-        if method.lower() in ("post", "put"):
+        if method.lower() in ("put"):
             kwargs["headers"]["Content-type"] = "application/json"
 
         url_params = {
@@ -112,12 +113,12 @@ class AzureRequests:
             if waiting:
                 time.sleep(waiting)
         try:
-            response = requests.request(method, url, *args, **kwargs)
-        except requests.exceptions.ProxyError as ex:
+            response = self.http_client.request(method, url, *args, **kwargs)
+        except httpx.ProxyError as ex:
             logger.warning(f"Proxy error ({ex}). Retrying later...")
             time.sleep(15)
             return self.request(method, url, *args, **kwargs)
-        if not response.ok:
+        if not response.is_success:
             if response.status_code // 100 == 5:
                 logger.warning(
                     f"Azure DevOps server error ({response.status_code}). Retrying later..."

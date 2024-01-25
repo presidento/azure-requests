@@ -13,32 +13,31 @@ azure_requests = AzureRequests(
 
 # ----------------------------- create work item -----------------------------
 
-work_item = azure_requests.api(
+WI_ID = azure_requests.call(
     # https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/create?view=azure-devops-rest-7.0
     "POST https://dev.azure.com/{organization}/{project}/_apis/wit/workitems/${type}?api-version=7.0",
-    type="Task",
-).request(
-    json=[
+    params=dict(type="Task"),
+    data=[
         {
             "op": "add",
             "path": "/fields/System.Title",
             "from": None,
             "value": "Sample task",
         }
-    ]
+    ],
+    result_key="id"
 )
 
-WI_ID = work_item["id"]
 print(f"Work item created with id {WI_ID}")
 
 # ----------------------------- get work item -----------------------------
 
-work_item = azure_requests.api(
+work_item = azure_requests.call(
     # Copy-pasted from https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/get-work-item?view=azure-devops-rest-7.0
     "GET https://dev.azure.com/{organization}/{project}/_apis/wit/workitems/{id}?api-version=7.0",
     # custom URL parameters
-    id=WI_ID,
-).request()
+    params=dict(id=WI_ID),
+)
 
 print(
     f"The work item was changed by "
@@ -49,12 +48,11 @@ print(
 
 # ----------------------------- update work item -----------------------------
 
-work_item = azure_requests.api(
+work_item = azure_requests.call(
     # Copy-pasted from https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/update?view=azure-devops-rest-7.0
     "PATCH https://dev.azure.com/{organization}/{project}/_apis/wit/workitems/{id}?api-version=7.0",
-    id=WI_ID,
-).request(
-    json=[
+    params=dict(id=WI_ID),
+    data=[
         {"op": "test", "path": "/rev", "value": work_item["rev"]},
         {
             "op": "add",
@@ -80,8 +78,8 @@ print(
 
 # ----------------------------- delete work item -----------------------------
 
-azure_requests.api(
+azure_requests.call(
     # Copy-pasted from https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/delete?view=azure-devops-rest-7.0
     "DELETE https://dev.azure.com/{organization}/{project}/_apis/wit/workitems/{id}?api-version=7.0",
-    id=WI_ID,
-).request()
+    params=dict(id=WI_ID),
+)

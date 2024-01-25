@@ -33,6 +33,17 @@ class AzureRequests:
         self.team = team
         self.rate_info: Optional[RateLimit] = None
 
+    def call(self, azure_url, params=None, data=None, result_key=None):
+        api_call = self.api(azure_url, **(params or {}))
+        if data is None:
+            response = api_call.request()
+        else:
+            response = api_call.request(json=data)
+        if result_key is None:
+            return response
+        else:
+            return response[result_key]
+
     def api(self, azure_url, **url_params):
         params = dict(
             organization=self.organization,

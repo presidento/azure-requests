@@ -26,14 +26,28 @@ azure_requests = AzureRequests(
     organization="<YOUR ORGANIZATION>",
 )
 
-work_item = azure_requests.api(
-    # Copy-pasted from https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/get-work-item?view=azure-devops-rest-7.0&tabs=HTTP
-    "GET https://dev.azure.com/{organization}/{project}/_apis/wit/workitems/{id}?api-version=7.0",
-    # custom URL parameters
-    id=12345,
-).request()
+WORK_ITEM_ID = 12345
 
-print(work_item)
+work_item_fields = azure_requests.call(
+    # Copy-pasted from https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/update?view=azure-devops-rest-7.0&tabs=HTTP
+    "PATCH https://dev.azure.com/{organization}/{project}/_apis/wit/workitems/{id}?api-version=7.0",
+    # custom URL parameters
+    params={
+        "id": WORK_ITEM_ID,
+    },
+    # JSON data
+    data=[
+        {
+            "op": "test",
+            "path": "/id",
+            "value": WORK_ITEM_ID,
+        }
+    ],
+    # syntactic sugar for azure_requests.call(...)[result_key]
+    result_key="fields"
+)
+
+print(work_item_fields)
 ```
 
 For a more detailed example see `example.py`.

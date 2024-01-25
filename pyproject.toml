@@ -1,6 +1,6 @@
 [project]
 name = "azure_requests"
-version = "23.6"  # YY.<counter>
+version = "24.1"  # YY.<counter>
 description = "Requests wrapper for Azure DevOps"
 readme = "README.md"
 license = {text = "MIT License"}
@@ -13,6 +13,7 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
 dependencies = ["requests"]
 

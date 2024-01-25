@@ -1,3 +1,7 @@
+# 24.1
+
+- Add `call` method to have unified simple interface for all API endpoints
+
 # 23.6
 
 - Retry on proxy error

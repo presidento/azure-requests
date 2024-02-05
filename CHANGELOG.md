@@ -1,3 +1,8 @@
+# 24.2
+
+- Fix bug: work items cannot be created due to wrong content-type
+  (Now use json patch content type if the payload is an array, not just for PATCH HTTP method)
+
 # 24.1
 
 - Add `call` method to have unified simple interface for all API endpoints

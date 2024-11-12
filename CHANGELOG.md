@@ -1,3 +1,7 @@
+# 24.4
+
+- Better error message for 4xx HTTP codes (e.g. expired access token)
+
 # 24.3
 
 - Return the plain `requests` response if it is not a JSON content.

@@ -1,6 +1,7 @@
 import dataclasses
 import datetime
 import logging
+import re
 import time
 from typing import Any, Optional, cast
 
@@ -119,14 +120,24 @@ class AzureRequests:
             time.sleep(15)
             return self.request(method, url, *args, **kwargs)
         if not response.ok:
+            additional_info = ""
             if response.status_code // 100 == 5:
                 logger.warning(
                     f"Azure DevOps server error ({response.status_code}). Retrying later..."
                 )
                 time.sleep(15)
                 return self.request(method, url, *args, **kwargs)
-            logger.error("Azure DevOps API error: " + response.text)
-            response.raise_for_status()
+            elif response.status_code // 100 == 4:
+                logger.debug("Azure DevOps API error: " + response.text)
+                if response.headers.get("Content-Type") == "text/html":
+                    if match := re.search(r"<title[^>]*>(.*?)</title>", response.text):
+                        additional_info = match.group(1)
+            else:
+                logger.error("Azure DevOps API error: " + response.text)
+            msg = f"{response.status_code}: {response.reason}"
+            if additional_info:
+                msg = f"{msg} // {additional_info}"
+            raise requests.HTTPError(msg, response=response)
         if "X-RateLimit-Remaining" in response.headers:
             self.rate_info = RateLimit(
                 resource=cast(str, response.headers.get("X-RateLimit-Resource")),

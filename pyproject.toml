@@ -22,10 +22,8 @@ dependencies = ["requests"]
 [dependency-groups]
 dev = [
     "black",
-    "build",
     "mypy",
     "pylint",
-    "twine",
     "types-requests",
 ]
 
@@ -37,5 +35,6 @@ email = "fm@farkas-mate.hu"
 Homepage = "https://github.com/presidento/azure-requests"
 Changelog = "https://github.com/presidento/azure-requests/blob/main/CHANGELOG.md"
 
-[tool.setuptools.package-data]
-azure_requests = ["py.typed"]
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

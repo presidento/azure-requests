@@ -151,7 +151,7 @@ class AzureRequests:
             )
         else:
             self.rate_info = None
-        if "application/json" in response.headers.get("content-type"):
+        if "application/json" in response.headers.get("content-type", ""):
             return response.json()
         else:
             return response

@@ -14,7 +14,7 @@ clean:
     rm --force --recursive --verbose build dist azure_requests.egg-info
 
 # Build the whole project, create a release
-build: clean bootstrap
+build: clean bootstrap mypy
     uv build
 
 # Upload the release to PyPi

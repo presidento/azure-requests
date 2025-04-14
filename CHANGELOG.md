@@ -1,3 +1,7 @@
+# 25.1
+
+- Add Python 3.13, remove Python 3.8 support.
+
 # 24.4
 
 - Better error message for 4xx HTTP codes (e.g. expired access token)

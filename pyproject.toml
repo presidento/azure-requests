@@ -21,6 +21,16 @@ classifiers = [
 requires-python = ">= 3.8"
 dependencies = ["requests"]
 
+[dependency-groups]
+dev = [
+    "black",
+    "build",
+    "mypy",
+    "pylint",
+    "twine",
+    "types-requests",
+]
+
 [[project.authors]]
 name = "Máté Farkas"
 email = "fm@farkas-mate.hu"
@@ -31,13 +41,3 @@ Changelog = "https://github.com/presidento/azure-requests/blob/main/CHANGELOG.md
 
 [tool.setuptools.package-data]
 azure_requests = ["py.typed"]
-
-[project.optional-dependencies]
-dev = [
-    "black",
-    "build",
-    "mypy",
-    "pylint",
-    "twine",
-    "types-requests",
-]

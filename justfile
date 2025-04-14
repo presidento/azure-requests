@@ -2,6 +2,7 @@ set shell := ["nu", "-c"]
 
 # Set up Python environment with specified Python version
 bootstrap:
+    uv lock --upgrade
     uv sync
 
 # Check static typing

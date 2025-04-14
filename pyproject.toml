@@ -3,12 +3,11 @@ name = "azure_requests"
 version = "24.4"  # YY.<counter>
 description = "Requests wrapper for Azure DevOps"
 readme = "README.md"
-license = {text = "MIT License"}
+license = "MIT"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: System Administrators",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.8",
